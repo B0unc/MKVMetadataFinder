@@ -2,7 +2,6 @@ import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
-import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.javacv.*;
 
 public class MKVFileMetadata {
@@ -19,11 +18,13 @@ public class MKVFileMetadata {
     }
 
     public void DisplayFileInfo(){
-        System.out.println("\n------------------------------------------------------------------------------------\n"
-        + "Displaying the file info\n");
+        System.out.println("""
+                
+                ------------------------------------------------------------------------------------
+                Displaying the file info
+                """);
         // Getting the file info
-        String extension = "";
-        extension = FilenameUtils.getExtension(filePath); // Should return mkv
+        String extension = FilenameUtils.getExtension(filePath); // Should return mkv
 
         // Printing for debugging
         System.out.println("File Name: " + file.getName());
@@ -31,14 +32,21 @@ public class MKVFileMetadata {
         System.out.println("File path: " + filePath);
         System.out.println("File extension: " + extension);
 
-        System.out.println( "\nEnd displaying the file info" +
-                "\n------------------------------------------------------------------------------------\n");
+        System.out.println("""
+                
+                End displaying the file info\
+                
+                ------------------------------------------------------------------------------------
+                """);
 
     }
 
     public void GrabTheFrame(){
-        System.out.println("\n------------------------------------------------------------------------------------\n"
-                + "Grabbing the file's framer\n");
+        System.out.println("""
+                
+                ------------------------------------------------------------------------------------
+                Grabbing the file's framer
+                """);
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)){
             grabber.start();
             AVFormatContext FContext = grabber.getFormatContext();
@@ -52,8 +60,12 @@ public class MKVFileMetadata {
 
 
 
-        System.out.println( "\nReleased the file's framer" +
-                "\n------------------------------------------------------------------------------------\n");
+        System.out.println("""
+                
+                Released the file's framer\
+                
+                ------------------------------------------------------------------------------------
+                """);
     }
 
 }
