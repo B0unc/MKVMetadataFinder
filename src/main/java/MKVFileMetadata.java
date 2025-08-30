@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
@@ -111,10 +112,8 @@ public class MKVFileMetadata {
     private String SearchThroughStreamMetadata(AVDictionary metadata, String s){
         AVDictionaryEntry entry = null;
         entry = avutil.av_dict_get(metadata, s, entry, avutil.AV_DICT_IGNORE_SUFFIX);
-        if(entry == null){
-            return null;
-        }
-        return entry.value().getString();
+        // Optional is sick
+        return Optional.ofNullable(entry).map(e -> e.value().getString()).orElse(null);
     }
 
     // Thinking about storing this into a file
