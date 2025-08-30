@@ -1,7 +1,6 @@
 import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
-import org.bytedeco.ffmpeg.avcodec.AVCodec;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.ffmpeg.avutil.AVDictionary;
