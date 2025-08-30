@@ -6,7 +6,6 @@ public class Main {
         MKVFileMetadata file = new MKVFileMetadata(path);
         System.out.println("Start testing");
         file.DisplayAllMetadata();
-        file.GrabTheFrame();
         System.out.println("End testing");
     }
 }
