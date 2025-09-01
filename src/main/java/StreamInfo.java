@@ -7,14 +7,12 @@ public class StreamInfo {
         FileDes.add(new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, i, SearchThroughStreamMetadata(metadata,"language"), SearchThroughStreamMetadata(metadata,"title")))
      */
      private final int StreamCodecType;
-     private final int StreamIdx; // This would be the key for the map
 
      private final String Lang;
      private final String title;
 
     public StreamInfo(int StreamCodecType, int StreamIdx, String Lang, String title) {
         this.StreamCodecType = StreamCodecType;
-        this.StreamIdx = StreamIdx;
         this.Lang = Lang;
         this.title = title;
     }
@@ -22,9 +20,6 @@ public class StreamInfo {
     // Get
     public int getStreamCodecType(int streamCodecType){
         return this.StreamCodecType;
-    }
-    public int getStreamIdx(int streamIdx){
-        return this.StreamIdx;
     }
     public String getLang(String lang){
         return this.Lang;
