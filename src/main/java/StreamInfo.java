@@ -11,21 +11,19 @@ public class StreamInfo {
      private final String Lang;
      private final String title;
 
-    public StreamInfo(int StreamCodecType, int StreamIdx, String Lang, String title) {
+    public StreamInfo(int StreamCodecType, String Lang, String title) {
         this.StreamCodecType = StreamCodecType;
         this.Lang = Lang;
         this.title = title;
     }
 
     // Get
-    public int getStreamCodecType(int streamCodecType){
+    public int getStreamCodecType(){
         return this.StreamCodecType;
     }
-    public String getLang(String lang){
+    public String getLang(){
         return this.Lang;
     }
-    public String getTitle(String title){
-        return this.title;
-    }
+    public String getTitle(){ return this.title; }
 
 }

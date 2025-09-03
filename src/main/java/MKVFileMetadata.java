@@ -12,13 +12,13 @@ import org.bytedeco.javacv.*;
 public class MKVFileMetadata {
     File file;
     String filePath;
-    Map<Integer,StreamInfo> FileStreamInfo;
+    Map<Integer,StreamInfo> FileStreamInfo_Map;
     int StreamIdx;
 
     public MKVFileMetadata(String filePath) {
         this.file = new File(filePath);
         this.filePath = file.getAbsolutePath();
-        this.FileStreamInfo = new HashMap<>();
+        this.FileStreamInfo_Map = new HashMap<>();
         this.StreamIdx = -1;
     }
 
@@ -136,9 +136,10 @@ public class MKVFileMetadata {
         }
     }
 
+
     // Get the List for the File Stream
-    public Map<Integer,StreamInfo> getFileStreamInfo(){
-        return FileStreamInfo;
+    public Map<Integer,StreamInfo> getFileStreamInfo_Map(){
+        return FileStreamInfo_Map;
     }
 
     /*
