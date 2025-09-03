@@ -9,3 +9,7 @@ This is meant for my bigger project JPToolbox, but I wanted to make this public 
 # How can I help
 
 TBD
+
+# Acknowledgement and Special Thanks
+[JavaCV] (https://github.com/bytedeco/javacv)
+[FFmpeg] (https://ffmpeg.org/)
