@@ -1,10 +1,4 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.bytedeco.ffmpeg.avformat.AVFormatContext;
-import org.bytedeco.ffmpeg.avformat.AVStream;
-import org.bytedeco.ffmpeg.avutil.AVDictionary;
 import org.bytedeco.ffmpeg.global.avutil;
-import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +10,7 @@ public class TestMKVFileMetadata {
     @Test
     @DisplayName(" Test the Map file to see if it works ")
     void TestFileStreamInfoMap(){
-        Map<Integer,StreamInfo> TestFileStreamMap = new HashMap<Integer, StreamInfo>();
-        MKVFileMetadata file = new MKVFileMetadata("testfile1.mkv");
+        Map<Integer,StreamInfo> TestFileStreamMap = new HashMap<>();
         /*
             testfile1.mkv should follow as
             Key:        Value: (StreamCodecType, Lang, Title)
