@@ -129,24 +129,5 @@ public class MKVFileMetadata {
         FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.getTitle()));
     }
 
-    /*
-        Future Plan: I think
-            - We want to store all of our File Stream Info into a list and that will contain the following:
-                - Subtitle
-                    - Stream ID
-                    - Lang
-                    - Title
-                - Audio
-                    - Stream ID
-                    - Lang
-                    - Title
-         ** We get this information of all files until we are done,
-         ** We need to display all of this information to the screen
-         --------------------------------Final Super ultra Final-------------------------------------------
-            - I think making a map with the stream Index as its key would be the better option
-                - Each stream index is unique and the key has to be unique also
-            - Now I think for the bigger project scope Maybe have the file name as its key and the map as the value
-                - I know it kinda stupid but let's see
-     */
 
 }

@@ -15,10 +15,6 @@ public class TestMKVFileMetadata {
         // Test Setup
         Map<Integer,StreamInfo> TestFileStreamMap = new HashMap<>();
         /* I prefer you put the values in manually using ffmpeg as a references
-            testfile1.mkv should follow as
-            Key:        Value: (StreamCodecType, Lang, Title)
-            1              AVMEDIA_TYPE_AUDIO, JPN, NULL
-            2              AVMEDIA_TYPE_SUBTITLE, ENG, NULL
         */
         TestFileStreamMap.put(1, new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, "jpn", null));
         TestFileStreamMap.put(2, new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, "eng", null));
@@ -30,7 +26,6 @@ public class TestMKVFileMetadata {
         Map<Integer,StreamInfo> RealFileStreamMap = file.getFileStreamInfo_Map();
         file.printFileStreamInfo_map(); // Set the printFileStreamInfo_map in the MKVFileMetadata to public so you can also see the map content of the real thing
 
-        // Test
         Assertions.assertEquals(TestFileStreamMap.equals(RealFileStreamMap), RealFileStreamMap.equals(TestFileStreamMap));
 
     }
