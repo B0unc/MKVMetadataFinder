@@ -35,10 +35,8 @@ public class MKVFileMetadata {
                 ------------------------------------------------------------------------------------
                 Displaying the file info
                 """);
-        // Getting the file info
-        String extension = FilenameUtils.getExtension(filePath); // Should return mkv
+        String extension = FilenameUtils.getExtension(filePath);
 
-        // Printing for debugging
         System.out.println("File Name: " + file.getName());
         System.out.println("File size: " + file.length());
         System.out.println("File path: " + filePath);
@@ -68,20 +66,17 @@ public class MKVFileMetadata {
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)){
             grabber.start();
-            // Need this for the streams
             AVFormatContext FContext = grabber.getFormatContext();
-            // Go through each stream
-            // Variables needed for each stream
-            String Lang = "";
-            String title = "";
+
+            String Lang;
+            String title;
             for(int i = 0; i < FContext.nb_streams(); i++){
 
                 AVStream stream = FContext.streams(i);
-                // System.out.println("Codec ID: " + codecType);
-                // Each stream will contain a metadata that we read from and each stream will contain a codec type
+
                 AVDictionary metadata = stream.metadata();
-                Lang = SearchThroughStreamMetadata(metadata,"language");;
-                title = SearchThroughStreamMetadata(metadata,"title");;
+                Lang = SearchThroughStreamMetadata(metadata,"language");
+                title = SearchThroughStreamMetadata(metadata,"title");
                 switch (stream.codecpar().codec_type()){
                     case avutil.AVMEDIA_TYPE_SUBTITLE:
                         FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, Lang, title));
@@ -106,16 +101,6 @@ public class MKVFileMetadata {
         entry = avutil.av_dict_get(metadata, s, entry, avutil.AV_DICT_IGNORE_SUFFIX);
         // Optional is sick
         return Optional.ofNullable(entry).map(e -> e.value().getString()).orElse(null);
-    }
-
-    // Thinking about storing this into a file
-    private void PrintAllMetadata(AVDictionary metadata){
-        AVDictionaryEntry entry = null;
-        while((entry = avutil.av_dict_get(metadata, "", entry, avutil.AV_DICT_IGNORE_SUFFIX)) != null){
-            String key = entry.key().getString();
-            String value = entry.value().getString();
-            System.out.println("    " + key + ": " + value);
-        }
     }
 
 
