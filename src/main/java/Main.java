@@ -2,7 +2,7 @@
 public class Main {
 
     public static void main(String[] args){
-        String path = "C:\\Users\\Thomas\\MKVMetadataFinder\\src\\main\\java\\test.mkv";
+        String path = "C:\\Users\\Thomas\\MKVMetadataFinder\\src\\main\\java\\test.mkv"; // Have to use absolute file path
         MKVFileMetadata file = new MKVFileMetadata(path);
         System.out.println("Start testing");
         file.DisplayAllMetadata();

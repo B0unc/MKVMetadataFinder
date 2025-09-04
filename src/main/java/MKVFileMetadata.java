@@ -25,7 +25,9 @@ public class MKVFileMetadata {
     public void DisplayAllMetadata() {
         DisplayFileInfo();
         GrabTheFrame();
+        printFileStreamInfo_map();
     }
+
 
     public void DisplayFileInfo(){
         System.out.println("""
@@ -63,44 +65,31 @@ public class MKVFileMetadata {
                 - I think a map will be a good data structure for this
      */
     public void GrabTheFrame(){
-        System.out.println("""
-                
-                ------------------------------------------------------------------------------------
-                Grabbing the file's framer
-                """);
 
         try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)){
             grabber.start();
             // Need this for the streams
             AVFormatContext FContext = grabber.getFormatContext();
-            System.out.println("\n--------------------------------------------------------------------------------------------");
-            System.out.println("Total amount of audio streams: " + grabber.getAudioStream());
-            System.out.println("Total number of streams: " + FContext.nb_streams());
             // Go through each stream
+            // Variables needed for each stream
+            String Lang = "";
+            String title = "";
             for(int i = 0; i < FContext.nb_streams(); i++){
 
                 AVStream stream = FContext.streams(i);
                 // System.out.println("Codec ID: " + codecType);
                 // Each stream will contain a metadata that we read from and each stream will contain a codec type
                 AVDictionary metadata = stream.metadata();
+                Lang = SearchThroughStreamMetadata(metadata,"language");;
+                title = SearchThroughStreamMetadata(metadata,"title");;
                 switch (stream.codecpar().codec_type()){
                     case avutil.AVMEDIA_TYPE_SUBTITLE:
-                        System.out.println("---------------------------------- Subtitle Codec Type -------------------------------------");
-                        System.out.println("Stream Index: " + i);
-                        System.out.println("Subtitle Lang: " + SearchThroughStreamMetadata(metadata,"language"));
-                        System.out.println("Subtitle title: " + SearchThroughStreamMetadata(metadata,"title"));
+                        FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, Lang, title));
                         break;
                    case avutil.AVMEDIA_TYPE_AUDIO:
-                       System.out.println("---------------------------------- Audio Codec Type ----------------------------------------");
-                       System.out.println("Stream Index: " + i);
-                       System.out.println("Audio Lang: " + SearchThroughStreamMetadata(metadata,"language"));
-                       System.out.println("Audio title: " + SearchThroughStreamMetadata(metadata,"title"));
+                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, Lang, null));
                        break;
                    case avutil.AVMEDIA_TYPE_VIDEO:
-                       System.out.println("---------------------------------- Video Codec Type ----------------------------------------");
-                       System.out.println("Stream Index: " + i);
-                       System.out.println("Video Codec Type");
-                       PrintAllMetadata(metadata);
                        break;
                 }
             }
@@ -109,14 +98,7 @@ public class MKVFileMetadata {
         }catch(Exception e){
             System.out.println("Error while grabbing the file's framer");
         }
-        System.out.println("--------------------------------------------------------------------------------------------");
 
-        System.out.println("""
-                
-                
-                ------------------------------------------------------------------------------------
-                Released the file's framer\
-                """);
     }
 
     private String SearchThroughStreamMetadata(AVDictionary metadata, String s){
@@ -140,6 +122,11 @@ public class MKVFileMetadata {
     // Get the List for the File Stream
     public Map<Integer,StreamInfo> getFileStreamInfo_Map(){
         return FileStreamInfo_Map;
+    }
+
+    public void printFileStreamInfo_map(){
+        System.out.println("------------------------------Printing the Map-----------------------------------------------------------");
+        FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.getTitle()));
     }
 
     /*
