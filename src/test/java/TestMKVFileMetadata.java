@@ -18,7 +18,7 @@ public class TestMKVFileMetadata {
         */
         TestFileStreamMap.put(1, new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, "jpn", null));
         TestFileStreamMap.put(2, new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, "eng", null));
-        TestFileStreamMap.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.getTitle()));
+        TestFileStreamMap.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
 
         // Function Setup
         MKVFileMetadata file = new MKVFileMetadata("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\testfile1.mkv");

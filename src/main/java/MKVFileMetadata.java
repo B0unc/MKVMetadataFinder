@@ -111,7 +111,7 @@ public class MKVFileMetadata {
 
     public void printFileStreamInfo_map(){
         System.out.println("------------------------------Printing the Map-----------------------------------------------------------");
-        FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.getTitle()));
+        FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
     }
 
 
