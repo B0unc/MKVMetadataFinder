@@ -10,7 +10,6 @@ import java.util.List;
 
 public class FolderToFile {
     String directoryPath;
-    Path userPath;
     List<Path> files;
 
     public FolderToFile(String FolderPath) {
