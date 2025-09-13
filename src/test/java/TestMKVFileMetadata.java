@@ -25,7 +25,7 @@ public class TestMKVFileMetadata {
         TestFileStreamMap.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
 
         // Function Setup
-        MKVFileMetadata file = new MKVFileMetadata("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\testfile1.mkv");
+        MKVFileMetadata file = new MKVFileMetadata("src/test/java/testfile1.mkv");
         file.GrabTheFrame();
         Map<Integer,StreamInfo> RealFileStreamMap = file.getFileStreamInfo_Map();
         file.printFileStreamInfo_map(); // Set the printFileStreamInfo_map in the MKVFileMetadata to public so you can also see the map content of the real thing
@@ -38,14 +38,18 @@ public class TestMKVFileMetadata {
     @DisplayName(" Test the Directory")
     void TestDirectory(){
         List<Path> TestDirectoryList = new ArrayList<>();
-        Path TestPath = Paths.get("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\Food Court\\test02.mkv");
+        Path TestPath = Paths.get("src/test/java/Food Court/test02.mkv");
         TestDirectoryList.add(TestPath);
-        TestPath = Paths.get("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\Food Court\\test 03.mkv");
+        TestPath = Paths.get("src/test/java/Food Court/test 03.mkv");
         TestDirectoryList.add(TestPath);
-        TestPath = Paths.get("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\Food Court\\test 04.mkv");
+        TestPath = Paths.get("src/test/java/Food Court/test 04.mkv");
         TestDirectoryList.add(TestPath);
-        TestPath = Paths.get("C:\\Users\\Thomas\\MKVMetadataFinder\\src\\test\\java\\Food Court\\test 05.mkv");
+        TestPath = Paths.get("src/test/java/Food Court/test 05.mkv");
         TestDirectoryList.add(TestPath);
+
+        for(Path p : TestDirectoryList){
+            System.out.println(p.getFileName().toString());
+        }
 
     }
 
