@@ -5,9 +5,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        List<Path> userFiles;
         FolderToFile userDirectoryFolder = new FolderToFile("src/main/java/Food Court");
-        userFiles = userDirectoryFolder.getFiles();
+        List<Path> userFiles = userDirectoryFolder.getFiles();
         for(Path userFile : userFiles) {
             String path = userFile.toString();
             String fileName = userFile.getFileName().toString();
