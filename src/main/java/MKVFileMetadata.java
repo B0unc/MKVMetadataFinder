@@ -93,6 +93,7 @@ public class MKVFileMetadata {
                        FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, Lang, null));
                        break;
                    case avutil.AVMEDIA_TYPE_VIDEO:
+                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_VIDEO, null, null));
                        System.out.println(stream.codecpar().codec_type());
                        break;
                 }

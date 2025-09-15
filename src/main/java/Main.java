@@ -1,3 +1,5 @@
+import backupFiles.backupUserFile;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -16,8 +18,12 @@ public class Main {
             System.out.println("End testing for " + fileName);
         }
          */
-
+/*
         MKVFileMetadata userMKVMetadataExtractor = new MKVFileMetadata("src/main/java/test.mkv");
         userMKVMetadataExtractor.DisplayAllMetadata();
+    */
+        backupUserFile test = new backupUserFile("src/main/java/test.mkv");
+        test.DisplayInfoForBackup();
+        test.backupTheUserFile();
     }
 }

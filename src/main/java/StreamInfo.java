@@ -12,8 +12,6 @@ public record StreamInfo(int StreamCodecType, String Lang, String title) {
         return this.StreamCodecType;
     }
 
-    public String getLang() {
-        return this.Lang;
-    }
-
+    public String getLang() {return this.Lang;}
+    public String getTitle() { return this.title;}
 }

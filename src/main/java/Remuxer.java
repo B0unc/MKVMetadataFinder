@@ -1,11 +1,11 @@
-import org.bytedeco.javacv.FFmpegFrameGrabber;
-import org.bytedeco.javacv.FFmpegFrameRecorder;
-import org.bytedeco.javacv.FrameGrabber;
-import org.bytedeco.javacv.FrameRecorder;
+import org.bytedeco.ffmpeg.global.avutil;
+import org.bytedeco.javacv.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Remuxer {
@@ -14,13 +14,15 @@ public class Remuxer {
     String filePath;
     String languageToTarget;
     Map<Integer,StreamInfo> remuxFileStreamInfo_Map;
-
+    Map<String, String> mapForSetOptions;
 
     Remuxer(String filePath, String languageToTarget) {
         this.file = Paths.get(filePath);
         this.filePath = filePath;
         this.languageToTarget = languageToTarget;
         this.remuxFileStreamInfo_Map = new HashMap<>();
+        this.mapForSetOptions = new HashMap<>();
+        mapForSetOptions.put("-c","copy");
     }
 
 
@@ -30,15 +32,27 @@ public class Remuxer {
             // construct the output file
             try(FFmpegFrameRecorder outputFile = new FFmpegFrameRecorder(filePath, grabber.getImageWidth(),
                     grabber.getImageHeight(), grabber.getImageHeight())) {
-
+                List<String> BuildStreamMap = new ArrayList<>();
                 for (Map.Entry<Integer, StreamInfo> entry : FileStreamInfo_Map.entrySet()) {
-                    if (entry.getValue().Lang().equals(languageToTarget)) {
+                   if(entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_VIDEO)
+                   {
+                       System.out.println("Getting the video stream");
+                       remuxFileStreamInfo_Map.put(entry.getKey(), entry.getValue());
+                       BuildStreamMap.add("0:" + entry.getKey().toString());
+                       mapForSetOptions.put("-map","0:" + entry.getKey());
+                   }
+                   else if ( ((entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_AUDIO) || (entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_SUBTITLE)) && entry.getValue().Lang().equals(languageToTarget)) {
                         System.out.println("adding key " + entry.getKey() + " and value " + entry.getValue());
                         remuxFileStreamInfo_Map.put(entry.getKey(), entry.getValue());
+                        BuildStreamMap.add("0:" + entry.getKey().toString());
+                        mapForSetOptions.put("-map","0:" + entry.getKey());
+                        System.out.println("0:" + entry.getKey());
                         System.out.println("added Tracks for " + entry.getKey());
                     }
                 }
             } catch (FrameRecorder.Exception e) {
+                FFmpegLogCallback.set();
+                System.out.println(e.getMessage());
                 throw new RuntimeException(e);
             }
             grabber.stop();
