@@ -30,6 +30,8 @@ public class MKVFileMetadata {
         DisplayFileInfo();
         GrabTheFrame();
         printFileStreamInfo_map();
+        Remuxer fileToRemux = new Remuxer(filePath, "jpn");
+        fileToRemux.runRemuxer(FileStreamInfo_Map);
     }
 
 
@@ -96,6 +98,8 @@ public class MKVFileMetadata {
                 }
                 inputStreamCodec_map.put(i, new inputStreamCodec(in_codecpar)); // just grab everything for now
             }
+            grabber.stop();
+            grabber.release();
 
 
         }catch(Exception e){
@@ -117,10 +121,14 @@ public class MKVFileMetadata {
         return FileStreamInfo_Map;
     }
 
+    public Path getFile(){
+        return file;
+    }
+
     public void printFileStreamInfo_map(){
         System.out.println("------------------------------Printing the Map-----------------------------------------------------------");
         FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
-        inputStreamCodec_map.forEach((k,v) -> System.out.println(k + ": " + v.getParameters()));
+        // inputStreamCodec_map.forEach((k,v) -> System.out.println(k + ": " + v.getParameters()));
     }
 
 
