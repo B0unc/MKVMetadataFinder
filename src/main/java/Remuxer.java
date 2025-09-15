@@ -11,7 +11,7 @@ public class Remuxer {
     Remuxer(AVFormatContext inputFormatContext) {
         this.inputFormatContext = inputFormatContext;
         this.outputFormatContext = null;
-        AVPacket pkt = null;
+        this.pkt = null;
     }
 
 
