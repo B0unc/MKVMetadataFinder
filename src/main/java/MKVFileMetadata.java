@@ -1,7 +1,10 @@
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import org.apache.commons.io.FilenameUtils;
+import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.ffmpeg.avutil.AVDictionary;
@@ -10,14 +13,15 @@ import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.*;
 
 public class MKVFileMetadata {
-    File file;
+    Path file;
     String filePath;
     Map<Integer,StreamInfo> FileStreamInfo_Map;
+    List<AVCodecParameters> AVStream_List;
     int StreamIdx;
 
     public MKVFileMetadata(String filePath) {
-        this.file = new File(filePath);
-        this.filePath = file.getAbsolutePath();
+        this.file = Paths.get(filePath);
+        this.filePath = filePath;
         this.FileStreamInfo_Map = new HashMap<>();
         this.StreamIdx = -1;
     }
@@ -37,8 +41,8 @@ public class MKVFileMetadata {
                 """);
         String extension = FilenameUtils.getExtension(filePath);
 
-        System.out.println("File Name: " + file.getName());
-        System.out.println("File size: " + file.length());
+        System.out.println("File Name: " + file.toFile().getName());
+        System.out.println("File size: " + file.toFile().length());
         System.out.println("File path: " + filePath);
         System.out.println("File extension: " + extension);
 
