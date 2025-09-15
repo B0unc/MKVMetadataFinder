@@ -1,10 +1,8 @@
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 import org.apache.commons.io.FilenameUtils;
-import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.ffmpeg.avutil.AVDictionary;
@@ -16,7 +14,6 @@ public class MKVFileMetadata {
     Path file;
     String filePath;
     Map<Integer,StreamInfo> FileStreamInfo_Map;
-    List<AVCodecParameters> AVStream_List;
     int StreamIdx;
 
     public MKVFileMetadata(String filePath) {
