@@ -3,6 +3,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import org.apache.commons.io.FilenameUtils;
+import org.bytedeco.ffmpeg.avcodec.AVCodecParameters;
 import org.bytedeco.ffmpeg.avformat.AVFormatContext;
 import org.bytedeco.ffmpeg.avformat.AVStream;
 import org.bytedeco.ffmpeg.avutil.AVDictionary;
@@ -14,12 +15,14 @@ public class MKVFileMetadata {
     Path file;
     String filePath;
     Map<Integer,StreamInfo> FileStreamInfo_Map;
+    Map<Integer,inputStreamCodec> inputStreamCodec_map;
     int StreamIdx;
 
     public MKVFileMetadata(String filePath) {
         this.file = Paths.get(filePath);
         this.filePath = filePath;
         this.FileStreamInfo_Map = new HashMap<>();
+        inputStreamCodec_map = new HashMap<>();
         this.StreamIdx = -1;
     }
 
@@ -69,11 +72,13 @@ public class MKVFileMetadata {
             grabber.start();
             AVFormatContext FContext = grabber.getFormatContext();
 
+
             String Lang;
             String title;
             for(int i = 0; i < FContext.nb_streams(); i++){
 
                 AVStream stream = FContext.streams(i);
+                AVCodecParameters in_codecpar = stream.codecpar();
 
                 AVDictionary metadata = stream.metadata();
                 Lang = SearchThroughStreamMetadata(metadata,"language");
@@ -86,8 +91,10 @@ public class MKVFileMetadata {
                        FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, Lang, null));
                        break;
                    case avutil.AVMEDIA_TYPE_VIDEO:
+                       System.out.println(stream.codecpar().codec_type());
                        break;
                 }
+                inputStreamCodec_map.put(i, new inputStreamCodec(in_codecpar)); // just grab everything for now
             }
 
 
@@ -113,6 +120,7 @@ public class MKVFileMetadata {
     public void printFileStreamInfo_map(){
         System.out.println("------------------------------Printing the Map-----------------------------------------------------------");
         FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
+        inputStreamCodec_map.forEach((k,v) -> System.out.println(k + ": " + v.getParameters()));
     }
 
 
