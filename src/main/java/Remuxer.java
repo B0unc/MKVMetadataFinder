@@ -30,7 +30,6 @@ public class Remuxer {
                 - I could just copy the map from
 
      */
-
     private void keepSelectedStreamIdx(){
         for(Map.Entry<Integer,StreamInfo> entry: FileStreamInfo_Map.entrySet()){
             int key = entry.getKey();
@@ -42,6 +41,14 @@ public class Remuxer {
         }
 
     }
+
+    /*
+            - Set the output file
+             * params to copy
+                - video res, frame rate, format
+                - aduio sample rate, channels, and format
+                - bitrate
+     */
 
     public void displayImportantContent(){
         System.out.println("------------------------------Printing the Map for the remuxer-----------------------------------------------------------");
