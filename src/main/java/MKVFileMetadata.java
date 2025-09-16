@@ -30,8 +30,8 @@ public class MKVFileMetadata {
         DisplayFileInfo();
         GrabTheFrame();
         printFileStreamInfo_map();
-        Remuxer fileToRemux = new Remuxer(filePath, "jpn");
-        fileToRemux.runRemuxer(FileStreamInfo_Map);
+        Remuxer test_file = new Remuxer(filePath, "jpn", FileStreamInfo_Map);
+        test_file.displayImportantContent();
     }
 
 
@@ -87,13 +87,31 @@ public class MKVFileMetadata {
                 title = SearchThroughStreamMetadata(metadata,"title");
                 switch (stream.codecpar().codec_type()){
                     case avutil.AVMEDIA_TYPE_SUBTITLE:
+                        if(Lang == null){
+                            Lang = "none";
+                        }
+                        if(title == null){
+                            title = "none";
+                        }
                         FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_SUBTITLE, Lang, title));
                         break;
                    case avutil.AVMEDIA_TYPE_AUDIO:
-                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, Lang, null));
+                       if(Lang == null){
+                           Lang = "none";
+                       }
+                       if(title == null){
+                           title = "none";
+                       }
+                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_AUDIO, Lang, title));
                        break;
                    case avutil.AVMEDIA_TYPE_VIDEO:
-                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_VIDEO, null, null));
+                       if(Lang == null){
+                           Lang = "none";
+                       }
+                       if(title == null){
+                           title = "none";
+                       }
+                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_VIDEO, Lang, title));
                        System.out.println(stream.codecpar().codec_type());
                        break;
                 }

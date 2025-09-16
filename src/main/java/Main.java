@@ -25,5 +25,7 @@ public class Main {
         backupUserFile test = new backupUserFile("src/main/java/test.mkv");
         test.DisplayInfoForBackup();
         test.backupTheUserFile();
+        MKVFileMetadata test_1 = new MKVFileMetadata("src/main/java/test.mkv");
+        test_1.DisplayAllMetadata();
     }
 }

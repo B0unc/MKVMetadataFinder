@@ -13,64 +13,43 @@ public class Remuxer {
     Path file;
     String filePath;
     String languageToTarget;
-    Map<Integer,StreamInfo> remuxFileStreamInfo_Map;
-    Map<String, String> mapForSetOptions;
+    List<Integer> toKeepStreamIdx;
+    Map<Integer,StreamInfo> FileStreamInfo_Map;
 
-    Remuxer(String filePath, String languageToTarget) {
+    Remuxer(String filePath, String languageToTarget, Map<Integer,StreamInfo> FileStreamInfo_Map) {
         this.file = Paths.get(filePath);
         this.filePath = filePath;
         this.languageToTarget = languageToTarget;
-        this.remuxFileStreamInfo_Map = new HashMap<>();
-        this.mapForSetOptions = new HashMap<>();
-        mapForSetOptions.put("-c","copy");
+        this.toKeepStreamIdx = new ArrayList<>();
+        this.FileStreamInfo_Map = new HashMap<>(FileStreamInfo_Map);
     }
 
+    /*
+        - Get the all the stream index of the tracks you want to keep
+            - I need the map from the MKVFileMetadata
+                - I could just copy the map from
 
-    private void removeTracksRemuxer( Map<Integer,StreamInfo> FileStreamInfo_Map){
-        try (FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(filePath)){
-            grabber.start();
-            // construct the output file
-            try(FFmpegFrameRecorder outputFile = new FFmpegFrameRecorder(filePath, grabber.getImageWidth(),
-                    grabber.getImageHeight(), grabber.getImageHeight())) {
-                List<String> BuildStreamMap = new ArrayList<>();
-                for (Map.Entry<Integer, StreamInfo> entry : FileStreamInfo_Map.entrySet()) {
-                   if(entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_VIDEO)
-                   {
-                       System.out.println("Getting the video stream");
-                       remuxFileStreamInfo_Map.put(entry.getKey(), entry.getValue());
-                       BuildStreamMap.add("0:" + entry.getKey().toString());
-                       mapForSetOptions.put("-map","0:" + entry.getKey());
-                   }
-                   else if ( ((entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_AUDIO) || (entry.getValue().getStreamCodecType() == avutil.AVMEDIA_TYPE_SUBTITLE)) && entry.getValue().Lang().equals(languageToTarget)) {
-                        System.out.println("adding key " + entry.getKey() + " and value " + entry.getValue());
-                        remuxFileStreamInfo_Map.put(entry.getKey(), entry.getValue());
-                        BuildStreamMap.add("0:" + entry.getKey().toString());
-                        mapForSetOptions.put("-map","0:" + entry.getKey());
-                        System.out.println("0:" + entry.getKey());
-                        System.out.println("added Tracks for " + entry.getKey());
-                    }
-                }
-            } catch (FrameRecorder.Exception e) {
-                FFmpegLogCallback.set();
-                System.out.println(e.getMessage());
-                throw new RuntimeException(e);
+     */
+
+    private void keepSelectedStreamIdx(){
+        for(Map.Entry<Integer,StreamInfo> entry: FileStreamInfo_Map.entrySet()){
+            int key = entry.getKey();
+            StreamInfo streamInfo = entry.getValue();
+            if(streamInfo.getLang().equals(this.languageToTarget) ||
+                    streamInfo.getStreamCodecType() == avutil.AVMEDIA_TYPE_VIDEO){
+                this.toKeepStreamIdx.add(key);
             }
-            grabber.stop();
-            grabber.release();
-
-        } catch (FrameGrabber.Exception ex) {
-            throw new RuntimeException(ex);
         }
+
     }
 
-    private void printRemuxMap(){
-        System.out.println("------------------------------Printing the Map after remux-----------------------------------------------------------");
-        remuxFileStreamInfo_Map.forEach((key,value)-> System.out.println(key + " : " + value));
-    }
+    public void displayImportantContent(){
+        System.out.println("------------------------------Printing the Map for the remuxer-----------------------------------------------------------");
+        keepSelectedStreamIdx();
+        for(int i : this.toKeepStreamIdx){
+            System.out.println("Stream Index to keep: " + i);
+        }
 
-    public void runRemuxer(Map<Integer,StreamInfo> FileStreamInfo_Map){
-        removeTracksRemuxer(FileStreamInfo_Map);
-        printRemuxMap();
     }
 
 }
