@@ -10,15 +10,28 @@ import java.util.Map;
 
 public class Remuxer {
     // Variables need for the remixing
-    Path file;
-    String filePath;
+    Path input_file;
+    String input_filePath;
     String languageToTarget;
     List<Integer> toKeepStreamIdx;
     Map<Integer,StreamInfo> FileStreamInfo_Map;
 
-    Remuxer(String filePath, String languageToTarget, Map<Integer,StreamInfo> FileStreamInfo_Map) {
-        this.file = Paths.get(filePath);
-        this.filePath = filePath;
+    // output file properties
+    int input_SampleRate;
+    int input_VideoCodec;
+    int input_AudioCodec;
+    int input_VideoBitrate;
+    int input_AudioBitrate;
+    double input_framerate; // Video framerate
+    int input_PixelFormat;
+    int input_ImageWidth;
+    int input_ImageHeight;
+    int input_AudioChannels;
+    String input_Format;
+
+    Remuxer(String input_filePath, String languageToTarget, Map<Integer,StreamInfo> FileStreamInfo_Map) {
+        this.input_file = Paths.get(input_filePath);
+        this.input_filePath = input_filePath;
         this.languageToTarget = languageToTarget;
         this.toKeepStreamIdx = new ArrayList<>();
         this.FileStreamInfo_Map = new HashMap<>(FileStreamInfo_Map);
@@ -43,6 +56,41 @@ public class Remuxer {
     }
 
     /*
+            **Setting up the output file Things we need
+                * setFormat
+                * setFramerate
+                * setSampleRate
+                * setVideoCodec
+                * setAudioCodec
+                * setVideoBitrate
+                * setAudioBitrate
+                ** Essential needs
+                    * imagewidth
+                    * imageheight
+                    * audiochannels
+     */
+    private void getInputFileProp(){
+        try(FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(input_filePath))
+        {
+            grabber.start();
+            input_SampleRate = grabber.getSampleRate();
+            input_VideoCodec = grabber.getVideoCodec();
+            input_AudioCodec = grabber.getAudioCodec();
+            input_VideoBitrate = grabber.getVideoBitrate();
+            input_AudioBitrate = grabber.getAudioBitrate();
+            input_PixelFormat = grabber.getPixelFormat();
+            input_ImageWidth = grabber.getImageWidth();
+            input_ImageHeight = grabber.getImageHeight();
+            input_AudioChannels = grabber.getAudioChannels();
+            input_Format = grabber.getFormat();
+            grabber.stop();
+        } catch (FrameGrabber.Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    /*
             - Set the output file
              * params to copy
                 - video res, frame rate, format
@@ -56,6 +104,18 @@ public class Remuxer {
         for(int i : this.toKeepStreamIdx){
             System.out.println("Stream Index to keep: " + i);
         }
+        getInputFileProp();
+        System.out.println("Sameple Rate: " + this.input_SampleRate);
+        System.out.println("Video Codec: " + this.input_VideoCodec);
+        System.out.println("Audio Codec: " + this.input_AudioCodec);
+        System.out.println("Video Bitrate: " + this.input_VideoBitrate);
+        System.out.println("Audio Bitrate: " + this.input_AudioBitrate);
+        System.out.println("Pixel Format: " + this.input_PixelFormat);
+        System.out.println("Image Width: " + this.input_ImageWidth);
+        System.out.println("Image Height: " + this.input_ImageHeight);
+        System.out.println("Audio Channels: " + this.input_AudioChannels);
+        System.out.println("Format: " + this.input_Format);
+        System.out.println("Video framerate: " + this.input_framerate);
 
     }
 
