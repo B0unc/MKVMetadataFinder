@@ -2,7 +2,7 @@ import backupFiles.backupUserFile;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // FolderToFile userDirectoryFolder = new FolderToFile("src/main/java/n2");
         // List<Path> userFiles = userDirectoryFolder.getFiles();
         /*
