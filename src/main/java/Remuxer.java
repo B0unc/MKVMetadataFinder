@@ -1,5 +1,4 @@
 import org.apache.commons.io.FilenameUtils;
-import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.*;
 
 import java.nio.file.Path;
@@ -122,7 +121,7 @@ public class Remuxer {
                 - bitrate
      */
 
-    public void displayImportantContent() throws Exception {
+    public void displayImportantContent() {
         System.out.println("------------------------------Printing the Map for the remuxer-----------------------------------------------------------");
         keepSelectedStreamIdx();
         for(int i : this.toKeepStreamIdx){
