@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         // FolderToFile userDirectoryFolder = new FolderToFile("src/main/java/n2");
         // List<Path> userFiles = userDirectoryFolder.getFiles();
         /*

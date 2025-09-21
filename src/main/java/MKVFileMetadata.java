@@ -26,7 +26,7 @@ public class MKVFileMetadata {
         this.StreamIdx = -1;
     }
 
-    public void DisplayAllMetadata() {
+    public void DisplayAllMetadata() throws Exception {
         DisplayFileInfo();
         GrabTheFrame();
         printFileStreamInfo_map();
