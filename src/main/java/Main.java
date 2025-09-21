@@ -1,8 +1,10 @@
 import backupFiles.backupUserFile;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // FolderToFile userDirectoryFolder = new FolderToFile("src/main/java/n2");
         // List<Path> userFiles = userDirectoryFolder.getFiles();
         /*

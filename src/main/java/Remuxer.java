@@ -1,6 +1,9 @@
 import org.apache.commons.io.FilenameUtils;
 import org.bytedeco.javacv.*;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -52,28 +55,46 @@ public class Remuxer {
         for(Map.Entry<Integer,StreamInfo> entry: FileStreamInfo_Map.entrySet()){
             int key = entry.getKey();
             StreamInfo streamInfo = entry.getValue();
-            if(streamInfo.getLang().equals(this.languageToTarget)){
+            if(!streamInfo.getLang().equals(this.languageToTarget)){
+                System.out.println(key);
                 this.toKeepStreamIdx.add(key);
             }
         }
 
     }
 
-    private void getRemuxingUsingFFmpeg(){
+    private void getRemuxingUsingFFmpeg() throws IOException {
 
         command.add("ffmpeg ");
-        command.add("-i ");
+        command.add("-i");
         command.add(this.input_file.toString());
-        command.add("-map ");
-        command.add("0:v "); // keep all video tracks
+        command.add("-map");
+        command.add("0");
         for(int i :  this.toKeepStreamIdx){
-            command.add("-map ");
-            command.add("-0:a:"+i + " ");
+            command.add("-map");
+            command.add("-0:"+i);
+            System.out.println(i);
         }
-        command.add("-c ");
-        command.add("copy ");
-        command.add(this.input_file.toString());
+        command.add("-c");
+        command.add("copy");
+        command.add(this.output_name);
 
+        ProcessBuilder pb = new ProcessBuilder(command);
+        pb.redirectErrorStream(true);
+
+        Process process = pb.start();
+
+        try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+            int exitCode = process.waitFor();
+            System.out.println("Exit code: " + exitCode);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -121,7 +142,7 @@ public class Remuxer {
                 - bitrate
      */
 
-    public void displayImportantContent() {
+    public void displayImportantContent() throws IOException {
         System.out.println("------------------------------Printing the Map for the remuxer-----------------------------------------------------------");
         keepSelectedStreamIdx();
         for(int i : this.toKeepStreamIdx){

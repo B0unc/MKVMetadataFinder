@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -26,7 +27,7 @@ public class MKVFileMetadata {
         this.StreamIdx = -1;
     }
 
-    public void DisplayAllMetadata(){
+    public void DisplayAllMetadata() throws IOException {
         DisplayFileInfo();
         GrabTheFrame();
         printFileStreamInfo_map();
@@ -111,7 +112,6 @@ public class MKVFileMetadata {
                        if(title == null){
                            title = "none";
                        }
-                       FileStreamInfo_Map.put(i,new StreamInfo(avutil.AVMEDIA_TYPE_VIDEO, Lang, title));
                        System.out.println(stream.codecpar().codec_type());
                        break;
                 }
