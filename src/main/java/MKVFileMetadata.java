@@ -32,7 +32,7 @@ public class MKVFileMetadata {
         GrabTheFrame();
         printFileStreamInfo_map();
         Remuxer test_file = new Remuxer(filePath, "jpn", FileStreamInfo_Map);
-        test_file.displayImportantContent();
+        test_file.runRemuxer();
     }
 
 
