@@ -1,4 +1,5 @@
 import org.apache.commons.io.FilenameUtils;
+import org.bytedeco.ffmpeg.global.avutil;
 import org.bytedeco.javacv.*;
 
 import java.io.BufferedReader;
@@ -30,7 +31,8 @@ public class Remuxer {
         this.languageToTarget = languageToTarget;
         this.toRemoveStreamIdx = new ArrayList<>();
         this.FileStreamInfo_Map = new HashMap<>(FileStreamInfo_Map);
-        this.output_name = FilenameUtils.getBaseName(input_filePath) + "backup2." + FilenameUtils.getExtension(input_filePath).toLowerCase();
+        this.output_name = FilenameUtils.getBaseName(input_filePath) + "backup2." +
+                FilenameUtils.getExtension(input_filePath).toLowerCase();
     }
 
     /*
@@ -43,8 +45,8 @@ public class Remuxer {
         for(Map.Entry<Integer,StreamInfo> entry: FileStreamInfo_Map.entrySet()){
             int key = entry.getKey();
             StreamInfo streamInfo = entry.getValue();
-            if(!streamInfo.getLang().equals(this.languageToTarget)){
-                System.out.println(key);
+            if(!streamInfo.getLang().equals(this.languageToTarget) &&
+                    streamInfo.getStreamCodecType() != avutil.AVMEDIA_TYPE_VIDEO){
                 this.toRemoveStreamIdx.add(key);
             }
         }
