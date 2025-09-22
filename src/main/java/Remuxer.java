@@ -63,7 +63,6 @@ public class Remuxer {
         for(int i :  this.toRemoveStreamIdx){
             command.add("-map");
             command.add("-0:"+i);
-            System.out.println(i);
         }
         command.add("-c");
         command.add("copy");
