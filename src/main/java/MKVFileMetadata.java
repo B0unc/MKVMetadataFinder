@@ -112,6 +112,7 @@ public class MKVFileMetadata {
                        if(title == null){
                            title = "none";
                        }
+                       FileStreamInfo_Map.put(i, new StreamInfo(avutil.AVMEDIA_TYPE_VIDEO, Lang, title));
                        System.out.println(stream.codecpar().codec_type());
                        break;
                 }
