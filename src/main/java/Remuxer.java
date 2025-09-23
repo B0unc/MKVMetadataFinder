@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,19 +17,17 @@ public class Remuxer {
     String input_filePath;
     String languageToTarget;
     List<Integer> toRemoveStreamIdx;
-    Map<Integer,StreamInfo> FileStreamInfo_Map;
     List<String> command;
 
     String output_name;
 
 
-    Remuxer(String input_filePath, String languageToTarget, Map<Integer,StreamInfo> FileStreamInfo_Map) {
+    Remuxer(String input_filePath, String languageToTarget) {
         this.command = new ArrayList<>();
         this.input_file = Paths.get(input_filePath);
         this.input_filePath = input_filePath;
         this.languageToTarget = languageToTarget;
         this.toRemoveStreamIdx = new ArrayList<>();
-        this.FileStreamInfo_Map = new HashMap<>(FileStreamInfo_Map);
         this.output_name = FilenameUtils.getBaseName(input_filePath) + "backup2." +
                 FilenameUtils.getExtension(input_filePath).toLowerCase();
     }
@@ -41,7 +38,7 @@ public class Remuxer {
                 - I could just copy the map from
 
      */
-    private void keepSelectedStreamIdx(){
+    private void keepSelectedStreamIdx(Map<Integer,StreamInfo> FileStreamInfo_Map){
         for(Map.Entry<Integer,StreamInfo> entry: FileStreamInfo_Map.entrySet()){
             int key = entry.getKey();
             StreamInfo streamInfo = entry.getValue();
@@ -76,7 +73,6 @@ public class Remuxer {
         try(BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
             }
             int exitCode = process.waitFor();
             System.out.println("Exit code: " + exitCode);
@@ -84,10 +80,11 @@ public class Remuxer {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("done");
     }
 
-    public void runRemuxer() throws IOException {
-        keepSelectedStreamIdx();
+    public void runRemuxer(Map<Integer,StreamInfo> FileStreamInfo_Map) throws IOException {
+        keepSelectedStreamIdx(FileStreamInfo_Map);
         getRemuxingUsingFFmpeg();
     }
 

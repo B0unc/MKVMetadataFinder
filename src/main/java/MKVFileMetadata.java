@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -30,9 +32,8 @@ public class MKVFileMetadata {
     public void DisplayAllMetadata() throws IOException {
         DisplayFileInfo();
         GrabTheFrame();
-        printFileStreamInfo_map();
-        Remuxer test_file = new Remuxer(filePath, "jpn", FileStreamInfo_Map);
-        test_file.runRemuxer();
+        Remuxer test_file = new Remuxer(filePath, "jpn");
+        test_file.runRemuxer(FileStreamInfo_Map);
     }
 
 
@@ -139,17 +140,6 @@ public class MKVFileMetadata {
     // Get the List for the File Stream
     public Map<Integer,StreamInfo> getFileStreamInfo_Map(){
         return FileStreamInfo_Map;
-    }
-/*
-    public Path getFile(){
-        return file;
-    }
- */
-
-    public void printFileStreamInfo_map(){
-        System.out.println("------------------------------Printing the Map-----------------------------------------------------------");
-        FileStreamInfo_Map.forEach((k,v)-> System.out.println(k+" : "+ v.getStreamCodecType() + ", " + v.getLang() + ", " + v.title()));
-        // inputStreamCodec_map.forEach((k,v) -> System.out.println(k + ": " + v.getParameters()));
     }
 
 
